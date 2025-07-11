@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SvgPlottingExample": {
+      "commandName": "Project",
+      "commandLineArgs": "/wait \"/svg:C:\\Files\\Dropbox\\Personal\\Properties\\110EForrestHillAve\\Drawings\\GarageWindowACPortal.svg\""
+    }
+  }
+}
