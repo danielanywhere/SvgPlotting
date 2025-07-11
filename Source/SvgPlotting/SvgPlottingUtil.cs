@@ -1223,6 +1223,7 @@ namespace SvgPlotting
 		/// </remarks>
 		public static void ProcessNode(SvgImageItem svg, HtmlNodeItem node)
 		{
+			int circleVertexCount = 200;
 			string content = "";
 			FEllipse ellipse = null;
 			int index = 0;
@@ -1236,121 +1237,129 @@ namespace SvgPlotting
 			float radius = 0f;
 			FAreaRounded rect = null;
 
-			//	TODO: Make sure that on every stand-alone path, the pen is up when moving to the first vertex.
-			if(IsContainer(node.NodeType))
+			if(svg != null && node != null)
 			{
-				if(IsVisible(node))
+				circleVertexCount = svg.CurveVertexCount * 4;
+				if(IsContainer(node.NodeType))
 				{
-					foreach(HtmlNodeItem nodeItem in node.Nodes)
+					if(IsVisible(node))
 					{
-						ProcessNode(svg, nodeItem);
-					}
-				}
-			}
-			else if(IsShape(node.NodeType))
-			{
-				if(svg.PlotCommands.Count > 0)
-				{
-					location = svg.PlotCommands[svg.PlotCommands.Count - 1].Point;
-				}
-				else
-				{
-					location = new FPoint();
-				}
-				switch(node.NodeType.ToLower())
-				{
-					case "circle":
-						radius = GetSystemValue(svg, node, "r");
-						ellipse = new FEllipse(
-							GetSystemValue(svg, node, "cx"),
-							GetSystemValue(svg, node, "cy"),
-							radius, radius);
-						points = FEllipse.GetVertices(ellipse, 200, 0f);
-						Transform(svg, points, ellipse.Center, node);
-						break;
-					case "ellipse":
-						ellipse = new FEllipse(
-							GetSystemValue(svg, node, "cx"),
-							GetSystemValue(svg, node, "cy"),
-							GetSystemValue(svg, node, "rx"),
-							GetSystemValue(svg, node, "ry"));
-						points = FEllipse.GetVertices(ellipse, 200, 0f);
-						Transform(svg, points, ellipse.Center, node);
-						break;
-					case "line":
-						line = new FLine(
-							GetSystemValue(svg, node, "x1"),
-							GetSystemValue(svg, node, "y1"),
-							GetSystemValue(svg, node, "x2"),
-							GetSystemValue(svg, node, "y2"));
-						points = new List<FPoint>();
-						points.Add(PlotPointPenStatus.PenUp, line.PointA);
-						points.Add(PlotPointPenStatus.PenDown, line.PointB);
-						//Transform(points, FLine.GetCenter(line), node);
-						//	In this version, lines will be anchored on the first point.
-						Transform(svg, points, line.PointA, node);
-						break;
-					case "path":
-						pathEntries =
-							PathEntryCollection.Parse(GetPropertyValue(node, "d"));
-						pathEntries =
-							PathEntryCollection.ConvertToAbsolute(pathEntries, location);
-						points = PathEntryCollection.GetVertices(pathEntries, 50);
-						point = PlotPointCollection.GetCenter(points);
-						Transform(svg, points, point, node);
-						break;
-					case "polygon":
-					case "polyline":
-						content = GetPropertyValue(node, "points");
-						points = GetCoordinatePairs(content);
-						point = PlotPointCollection.GetCenter(points);
-						Transform(svg, points, point, node);
-						break;
-					case "rect":
-						rect = new FAreaRounded(
-							GetSystemValue(svg, node, "x"),
-							GetSystemValue(svg, node, "y"),
-							GetSystemValue(svg, node, "width"),
-							GetSystemValue(svg, node, "height"),
-							GetSystemValue(svg, node, "rx"),
-							GetSystemValue(svg, node, "ry")
-							);
-						points = FAreaRounded.GetVertices(rect, 50);
-						Transform(svg, points, FArea.GetCenter(rect), node);
-						break;
-				}
-				if(points.Count > 0)
-				{
-					//	Convert to real-world coordinates.
-					ApplyScale(points, svg.GlobalScale.ScaleX, svg.GlobalScale.ScaleY);
-					//	In this version, we aren't going to cross the edge of a shape
-					//	directly. Instead, we'll find the closest point on the
-					//	transformed edge to the active location and make that the
-					//	starting point. After crossing the last point in the collection,
-					//	wrap back around to the first item and fill in all of the
-					//	segments that haven't yet been covered, stopping at the initial
-					//	starting point.
-					pointIndex = PlotPointCollection.ClosestPointIndex(location, points);
-					if(pointIndex > -1)
-					{
-						point = points[pointIndex].Point;
-						if(!point.Equals(location))
+						foreach(HtmlNodeItem nodeItem in node.Nodes)
 						{
-							svg.PlotCommands.Add(PlotPointPenStatus.PenUp, point);
-							location = point;
+							ProcessNode(svg, nodeItem);
 						}
 					}
-					pointCount = points.Count;
-					for(index = pointIndex + 1; index < pointCount; index++)
+				}
+				else if(IsShape(node.NodeType))
+				{
+					if(svg.PlotPoints.Count > 0)
 					{
-						svg.PlotCommands.Add(points[pointIndex]);
+						location = svg.PlotPoints[svg.PlotPoints.Count - 1].Point;
 					}
-					for(index = 0; index <= pointIndex; index++)
+					else
 					{
-						svg.PlotCommands.Add(points[pointIndex]);
+						location = new FPoint();
+					}
+					switch(node.NodeType.ToLower())
+					{
+						case "circle":
+							radius = GetSystemValue(svg, node, "r");
+							ellipse = new FEllipse(
+								GetSystemValue(svg, node, "cx"),
+								GetSystemValue(svg, node, "cy"),
+								radius, radius);
+							points = FEllipse.GetVertices(ellipse, circleVertexCount, 0f);
+							Transform(svg, points, ellipse.Center, node);
+							break;
+						case "ellipse":
+							ellipse = new FEllipse(
+								GetSystemValue(svg, node, "cx"),
+								GetSystemValue(svg, node, "cy"),
+								GetSystemValue(svg, node, "rx"),
+								GetSystemValue(svg, node, "ry"));
+							points = FEllipse.GetVertices(ellipse, circleVertexCount, 0f);
+							Transform(svg, points, ellipse.Center, node);
+							break;
+						case "line":
+							line = new FLine(
+								GetSystemValue(svg, node, "x1"),
+								GetSystemValue(svg, node, "y1"),
+								GetSystemValue(svg, node, "x2"),
+								GetSystemValue(svg, node, "y2"));
+							points = new List<FPoint>();
+							points.Add(PlotPointPenStatus.PenUp, line.PointA);
+							points.Add(PlotPointPenStatus.PenDown, line.PointB);
+							//Transform(points, FLine.GetCenter(line), node);
+							//	In this version, lines will be anchored on the first point.
+							Transform(svg, points, line.PointA, node);
+							break;
+						case "path":
+							pathEntries =
+								PathEntryCollection.Parse(GetPropertyValue(node, "d"));
+							pathEntries =
+								PathEntryCollection.ConvertToAbsolute(pathEntries, location);
+							points = PathEntryCollection.GetVertices(pathEntries,
+								svg.CurveVertexCount);
+							point = PlotPointCollection.GetCenter(points);
+							Transform(svg, points, point, node);
+							break;
+						case "polygon":
+						case "polyline":
+							content = GetPropertyValue(node, "points");
+							points = GetCoordinatePairs(content);
+							point = PlotPointCollection.GetCenter(points);
+							Transform(svg, points, point, node);
+							break;
+						case "rect":
+							rect = new FAreaRounded(
+								GetSystemValue(svg, node, "x"),
+								GetSystemValue(svg, node, "y"),
+								GetSystemValue(svg, node, "width"),
+								GetSystemValue(svg, node, "height"),
+								GetSystemValue(svg, node, "rx"),
+								GetSystemValue(svg, node, "ry")
+								);
+							points = FAreaRounded.GetVertices(rect, svg.CurveVertexCount);
+							Transform(svg, points, FArea.GetCenter(rect), node);
+							break;
+					}
+					if(points.Count > 0)
+					{
+						//	Convert to real-world coordinates.
+						ApplyScale(points, svg.GlobalScale.ScaleX, svg.GlobalScale.ScaleY);
+						//	In this version, we aren't going to cross the edge of a shape
+						//	directly. Instead, we'll find the closest point on the
+						//	transformed edge to the active location and make that the
+						//	starting point. After crossing the last point in the collection,
+						//	wrap back around to the first item and fill in all of the
+						//	segments that haven't yet been covered, stopping at the initial
+						//	starting point.
+						if(points[0].PenStatus == PlotPointPenStatus.PenUp)
+						{
+							//	We are going to be moving to our own starting place.
+							points.RemoveAt(0);
+						}
+						pointIndex = PlotPointCollection.ClosestPointIndex(location, points);
+						if(pointIndex > -1)
+						{
+							point = points[pointIndex].Point;
+							if(!point.Equals(location))
+							{
+								svg.PlotPoints.Add(PlotPointPenStatus.PenUp, point);
+								location = point;
+							}
+						}
+						pointCount = points.Count;
+						for(index = pointIndex + 1; index < pointCount; index++)
+						{
+							svg.PlotPoints.Add(points[index]);
+						}
+						for(index = 0; index <= pointIndex; index++)
+						{
+							svg.PlotPoints.Add(points[index]);
+						}
 					}
 				}
-
 			}
 		}
 		//*-----------------------------------------------------------------------*

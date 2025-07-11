@@ -2,6 +2,8 @@
 
 An easy-to-use library that brings physical plotting and shape-cutting capabilities to normal SVG image files, without any dependencies on Windows or other similar vendors.
 
+NOTE: In this version, all output is in mm. Please create an issue on the GitHub repository if you would like to be able to choose any other type of measurement unit.
+
 Basic Example:
 
 ```cs
@@ -26,21 +28,21 @@ namespace SvgPlottingDemo
    Trace.Listeners.Add(new ConsoleTraceListener());
 
    svg.Initialize(doc);
-   foreach(PlotPointItem plotItem in svg.PlotCommands)
+   foreach(PlotPointItem plotPointItem in svg.PlotPoints)
    {
-    if(plotItem.PenStatus != pen)
-    {
-     Console.WriteLine($"Pen Status: {plotItem.PenStatus}");
-    }
-    switch(plotItem.PenStatus)
-    {
-     case PlotPointPenStatus.PenDown:
-      Console.WriteLine($" Line To: {plotItem.Point}");
-      break;
-     case PlotPointPenStatus.PenUp:
-      Console.WriteLine($" Move To: {plotItem.Point}");
-      break;
-    }
+				if(plotPointItem.PenStatus != pen)
+				{
+					Console.WriteLine($"Pen Status: {plotPointItem.PenStatus}");
+				}
+				switch(plotPointItem.PenStatus)
+				{
+					case PlotPointPenStatus.PenDown:
+						Console.WriteLine($" Line To: {plotPointItem.Point}");
+						break;
+					case PlotPointPenStatus.PenUp:
+						Console.WriteLine($" Move To: {plotPointItem.Point}");
+						break;
+				}
    }
   }
  }

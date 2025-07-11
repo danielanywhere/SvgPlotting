@@ -130,6 +130,7 @@ namespace SvgPlottingExample
 		{
 			string content = File.ReadAllText(mSvgFilename);
 			HtmlDocument doc = new HtmlDocument(content);
+			PlotPointPenStatus pen = PlotPointPenStatus.None;
 			SvgImageItem svg = new SvgImageItem();
 
 			Trace.Listeners.Add(new ConsoleTraceListener());
@@ -150,7 +151,23 @@ namespace SvgPlottingExample
 			Console.WriteLine($"At 14pt, 5ch = {GetPixelValue(svg, "5ch", doc)}px");
 			doc.Attributes.Remove("font-size");
 
-			svg.Initialize(doc);
+			svg.Initialize(doc, 50);
+			foreach(PlotPointItem plotPointItem in svg.PlotPoints)
+			{
+				if(plotPointItem.PenStatus != pen)
+				{
+					Console.WriteLine($"Pen Status: {plotPointItem.PenStatus}");
+				}
+				switch(plotPointItem.PenStatus)
+				{
+					case PlotPointPenStatus.PenDown:
+						Console.WriteLine($" Line To: {plotPointItem.Point}");
+						break;
+					case PlotPointPenStatus.PenUp:
+						Console.WriteLine($" Move To: {plotPointItem.Point}");
+						break;
+				}
+			}
 		}
 		//*-----------------------------------------------------------------------*
 

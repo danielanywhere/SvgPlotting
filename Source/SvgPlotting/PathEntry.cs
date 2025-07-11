@@ -231,7 +231,7 @@ namespace SvgPlotting
 			FLine line = null;
 			FPoint locationPoint = new FPoint();
 			PlotPointItem plot = null;
-			FPoint point = null;
+			FPoint point = new FPoint();
 			FPoint pointEnd = null;
 			List<FPoint> points = null;
 			FPoint pointStart = null;

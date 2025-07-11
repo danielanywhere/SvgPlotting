@@ -82,6 +82,24 @@ namespace SvgPlotting
 		//*-----------------------------------------------------------------------*
 
 		//*-----------------------------------------------------------------------*
+		//*	CurveVertexCount																											*
+		//*-----------------------------------------------------------------------*
+		/// <summary>
+		/// Private member for
+		/// <see cref="CurveVertexCount">CurveVertexCount</see>.
+		/// </summary>
+		private int mCurveVertexCount = 50;
+		/// <summary>
+		/// Get/Set the count of vertices to place on each curve.
+		/// </summary>
+		public int CurveVertexCount
+		{
+			get { return mCurveVertexCount; }
+			set { mCurveVertexCount = value; }
+		}
+		//*-----------------------------------------------------------------------*
+
+		//*-----------------------------------------------------------------------*
 		//*	Document																															*
 		//*-----------------------------------------------------------------------*
 		/// <summary>
@@ -169,16 +187,22 @@ namespace SvgPlotting
 		/// <param name="document">
 		/// Reference to the HTML document used to back this image.
 		/// </param>
-		public void Initialize(HtmlDocument document)
+		/// <param name="curveVertexCount">
+		/// Count of vertices to apply per curve.
+		/// </param>
+		public void Initialize(HtmlDocument document, int curveVertexCount = 50)
 		{
 			HtmlNodeItem svg = null;
 			string[] viewBox = null;
 			float width = 0f;
 			float height = 0f;
 
+			//	TODO: Mention that in this version, all output is in mm.
+			mCurveVertexCount = curveVertexCount;
 			if(document != null)
 			{
 				//	Calculate the global scale.
+				mDocument = document;
 				svg = document.Nodes.FindMatch(x => x.NodeType.ToLower() == "svg");
 				if(svg != null)
 				{
@@ -221,25 +245,32 @@ namespace SvgPlotting
 					{
 						ProcessNode(this, nodeItem);
 					}
+					//	In this version, all output is in mm.
+					foreach(PlotPointItem pointItem in mPlotPoints)
+					{
+						pointItem.Point.X =
+							(float)HConverter.Convert((double)pointItem.Point.X, "px", "mm");
+						pointItem.Point.Y =
+							(float)HConverter.Convert((double)pointItem.Point.Y, "px", "mm");
+					}
 				}
 			}
-			mDocument = document;
 		}
 		//*-----------------------------------------------------------------------*
 
 		//*-----------------------------------------------------------------------*
-		//*	PlotCommands																													*
+		//*	PlotPoints																														*
 		//*-----------------------------------------------------------------------*
 		/// <summary>
-		/// Private member for <see cref="PlotCommands">PlotCommands</see>.
+		/// Private member for <see cref="PlotPoints">PlotCommands</see>.
 		/// </summary>
-		private PlotPointCollection mPlotCommands = new PlotPointCollection();
+		private PlotPointCollection mPlotPoints = new PlotPointCollection();
 		/// <summary>
 		/// Get a reference to the collection of physical plot commands.
 		/// </summary>
-		public PlotPointCollection PlotCommands
+		public PlotPointCollection PlotPoints
 		{
-			get { return mPlotCommands; }
+			get { return mPlotPoints; }
 		}
 		//*-----------------------------------------------------------------------*
 
