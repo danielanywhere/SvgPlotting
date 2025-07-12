@@ -1,34 +1,41 @@
 # Dan's SVG Plotting Library
 
 Convert curves from SVGs directly into physical, straight‑line plotting
-instructions and completely skip the idea of no manual curve flattening!
+instructions and completely skip the idea of manual curve flattening!
 
 <p>&nbsp;</p>
 
 ## Why keep fiddling with Inkscape?
 
-Users wanting to output SVGs for plotters typically have to resort to
-multi‑step workflows, involving at least the following steps.
+If you use Inkscape or other popular SVG editors to prepare your output
+for plotters and physical work, you will already be familiar with
+resorting to multi‑step workflows, involving at least the following
+steps.
+
+-   Create a sacrificial copy of your file that will no longer be
+    editable in the future.
 
 -   Convert everything to objects.
 
--   Subdivide curves until flat enough.
+-   Subdivide all curves until you reach a desirable interpolation
+    resolution.
 
 -   Convert all curves to line segments.
 
 -   Export to DXF (or another format).
 
-That’s a lot of extra effort, and potential for error, when SvgPlotting
-can just do all that for you with a single call.
+That’s time-consuming, a lot of extra effort, and potential for error,
+not to mention that if you make any updates or improvements to the
+original drawing and want to print again, you have to repeat the entire
+process.
 
 <p>&nbsp;</p>
 
 ## The SvgPlotting Wheelhouse
 
-With SvgPlotting you can get your physical plotting coordinates as soon
-as you are finished editing your natural SVG document, with no need to
-create a sacrificial version that can never be edited again, using the
-following easy steps.
+With the SvgPlotting library, you can get the finished physical plotting
+data with a single call, and there is no need to create a sacrificial or
+un-editable version of your file. Just follow these easy steps.
 
 -   Load an SVG file as an **HtmlDocument**.
 
@@ -114,7 +121,7 @@ Here are some of the main benefits of choosing the SvgPlotting library.
 -   **Complete plotting data**. Straight segments and pen state
     included.
 
--   **Flexible output**. This library serves as an ideal precursor to
+-   **Generic output**. This library serves as an ideal precursor to
     DXF, G‑code, pen‑plot instructions.
 
 <p>&nbsp;</p>
@@ -142,8 +149,8 @@ are no commercial dependencies aside from Newtonsoft JSON.
     directly in Unity or other systems compatible with .NET Standard.
     Virtually slap it into any C#/.NET project.
 
--   No OS or GUI dependencies works headless and server-side on any
-    platform where .NET will run.
+-   No OS or GUI dependencies. This library works either headless or
+    server-side on any platform where .NET will run.
 
 -   Directly consume *svg*.**PlotPoints** to generate your own output
     format.
@@ -155,7 +162,8 @@ are no commercial dependencies aside from Newtonsoft JSON.
 Following are a few tips to help you get started.
 
 -   All output is currently in **mm**. If you would like the option to
-    select any unit of measurement, please create an issue.
+    select any unit of measurement, please create an issue in this
+    repository.
 
 -   Higher **curveVertexCount** creates smoother curves but at the cost
     of more segments.
