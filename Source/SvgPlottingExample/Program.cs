@@ -131,7 +131,7 @@ namespace SvgPlottingExample
 			string content = File.ReadAllText(mSvgFilename);
 			HtmlDocument doc = new HtmlDocument(content);
 			PlotPointPenStatus pen = PlotPointPenStatus.None;
-			SvgImageItem svg = new SvgImageItem();
+			SvgImageItem svg = new SvgImageItem(doc, 50);
 
 			Trace.Listeners.Add(new ConsoleTraceListener());
 
@@ -151,7 +151,6 @@ namespace SvgPlottingExample
 			Console.WriteLine($"At 14pt, 5ch = {GetPixelValue(svg, "5ch", doc)}px");
 			doc.Attributes.Remove("font-size");
 
-			svg.Initialize(doc, 50);
 			foreach(PlotPointItem plotPointItem in svg.PlotPoints)
 			{
 				if(plotPointItem.PenStatus != pen)

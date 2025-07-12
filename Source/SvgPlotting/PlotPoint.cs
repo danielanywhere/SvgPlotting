@@ -248,6 +248,9 @@ namespace SvgPlotting
 		/// <summary>
 		/// Create a new instance of the PlotPointItem item.
 		/// </summary>
+		/// <param name="penStatus">
+		/// Initial status of the pen for this point.
+		/// </param>
 		public PlotPointItem(PlotPointPenStatus penStatus)
 		{
 			mPenStatus = penStatus;

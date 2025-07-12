@@ -22,12 +22,11 @@ namespace SvgPlottingDemo
    string content = File.ReadAllText(@"C:\Temp\MySvg.svg");
    HtmlDocument doc = new HtmlDocument(content);
    PlotPointPenStatus pen = PlotPointPenStatus.None;
-   SvgImageItem svg = new SvgImageItem();
+   SvgImageItem svg = new SvgImageItem(doc, 50);
 
    // Optionally add a trace listener to output library activities to console.
    Trace.Listeners.Add(new ConsoleTraceListener());
 
-   svg.Initialize(doc);
    foreach(PlotPointItem plotPointItem in svg.PlotPoints)
    {
 				if(plotPointItem.PenStatus != pen)

@@ -79,6 +79,21 @@ namespace SvgPlotting
 				InitializeConverter();
 			}
 		}
+		//*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*
+		/// <summary>
+		/// Create a new instance of the SvgImageItem item.
+		/// </summary>
+		/// <param name="document">
+		/// Reference to the HTML document to read.
+		/// </param>
+		/// <param name="curveVertexCount">
+		/// The count of vertices to place on each curve.
+		/// </param>
+		public SvgImageItem(HtmlDocument document, int curveVertexCount = 50) :
+			this()
+		{
+			Initialize(document, curveVertexCount);
+		}
 		//*-----------------------------------------------------------------------*
 
 		//*-----------------------------------------------------------------------*
@@ -197,7 +212,6 @@ namespace SvgPlotting
 			float width = 0f;
 			float height = 0f;
 
-			//	TODO: Mention that in this version, all output is in mm.
 			mCurveVertexCount = curveVertexCount;
 			if(document != null)
 			{

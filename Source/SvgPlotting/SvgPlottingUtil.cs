@@ -38,7 +38,6 @@ namespace SvgPlotting
 		//*************************************************************************
 		//*	Private																																*
 		//*************************************************************************
-		//	TODO: Write that the only containers currently supported are a and g.
 		/// <summary>
 		/// The currently accepted container types.
 		/// </summary>
@@ -47,7 +46,6 @@ namespace SvgPlotting
 			"a", "g"
 		};
 
-		//	TODO: Write that the only shapes currently supported are circle, ellipse, line, path, polygon, polyline, and rect.
 		/// <summary>
 		/// The currently recognized shape types.
 		/// </summary>
@@ -56,8 +54,6 @@ namespace SvgPlotting
 			"circle", "ellipse", "line", "path", "polygon", "polyline", "rect"
 		};
 
-		//	TODO: Write that 3D transforms are not yet supported.
-		//	TODO: Write that text plotting is not yet supported.
 		/// <summary>
 		/// Dynamic conversion unit groups.
 		/// </summary>
