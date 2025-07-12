@@ -29,19 +29,19 @@ namespace SvgPlottingDemo
 
    foreach(PlotPointItem plotPointItem in svg.PlotPoints)
    {
-				if(plotPointItem.PenStatus != pen)
-				{
-					Console.WriteLine($"Pen Status: {plotPointItem.PenStatus}");
-				}
-				switch(plotPointItem.PenStatus)
-				{
-					case PlotPointPenStatus.PenDown:
-						Console.WriteLine($" Line To: {plotPointItem.Point}");
-						break;
-					case PlotPointPenStatus.PenUp:
-						Console.WriteLine($" Move To: {plotPointItem.Point}");
-						break;
-				}
+    if(plotPointItem.PenStatus != pen)
+    {
+     Console.WriteLine($"Pen Status: {plotPointItem.PenStatus}");
+    }
+    switch(plotPointItem.PenStatus)
+    {
+     case PlotPointPenStatus.PenDown:
+      Console.WriteLine($" Line To: {plotPointItem.Point}");
+      break;
+     case PlotPointPenStatus.PenUp:
+      Console.WriteLine($" Move To: {plotPointItem.Point}");
+      break;
+    }
    }
   }
  }
