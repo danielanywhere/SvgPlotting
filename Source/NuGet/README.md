@@ -32,6 +32,7 @@ namespace SvgPlottingDemo
     if(plotPointItem.PenStatus != pen)
     {
      Console.WriteLine($"Pen Status: {plotPointItem.PenStatus}");
+     pen = plotPointItem.PenStatus;
     }
     switch(plotPointItem.PenStatus)
     {
