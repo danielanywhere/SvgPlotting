@@ -62,11 +62,11 @@ namespace SvgPlotting
 		/// coordinates and values.
 		/// </returns>
 		public static PathEntryCollection ConvertToAbsolute(
-			PathEntryCollection entries, FPoint location)
+			PathEntryCollection entries, FVector2 location)
 		{
 			PathEntryItem entry = null;
 			int index = 0;
-			FPoint point = new FPoint();
+			FVector2 point = new FVector2();
 			List<float> points = new List<float>();
 			PathEntryCollection result = new PathEntryCollection();
 
@@ -229,14 +229,14 @@ namespace SvgPlotting
 			FVector2 center;
 			FEllipse ellipse = null;
 			FLine line = null;
-			FPoint locationPoint = new FPoint();
+			FVector2 locationPoint = new FVector2();
 			PlotPointItem plot = null;
-			FPoint point = new FPoint();
-			FPoint pointEnd = null;
-			List<FPoint> points = null;
-			FPoint pointStart = null;
-			FPoint previousControlC = null;
-			FPoint previousControlQ = null;
+			FVector2 point = new FVector2();
+			FVector2 pointEnd = null;
+			List<FVector2> points = null;
+			FVector2 pointStart = null;
+			FVector2 previousControlC = null;
+			FVector2 previousControlQ = null;
 			PlotPointCollection result = new PlotPointCollection();
 			float rotation = 0f;
 			float sweep = 0f;
@@ -260,9 +260,9 @@ namespace SvgPlotting
 							//	Translate ellipse by negative amount.
 							if(entryItem.Points.Count > 6)
 							{
-								pointStart = new FPoint(point.X, point.Y);
+								pointStart = new FVector2(point.X, point.Y);
 								pointEnd =
-									new FPoint(entryItem.Points[5], entryItem.Points[6]);
+									new FVector2(entryItem.Points[5], entryItem.Points[6]);
 								rotation = entryItem.Points[2];
 								line = new FLine(pointStart, pointEnd);
 								ellipse = new FEllipse(
@@ -277,7 +277,7 @@ namespace SvgPlotting
 									bLargeArc ^ bSweep, out center))
 								{
 									//	The ellipse can be repositioned to center.
-									ellipse.Center = (FPoint)center;
+									ellipse.Center = (FVector2)center;
 									angleStart = Trig.GetLineAngle(ellipse.Center, pointStart);
 									angleEnd = Trig.GetLineAngle(ellipse.Center, pointEnd);
 									angleDiff = angleEnd - angleStart;
@@ -331,7 +331,7 @@ namespace SvgPlotting
 										}
 										points = FEllipse.GetVerticesInArc(ellipse,
 											curveVertexCount, angleStart, sweep);
-										foreach(FPoint pointItem in points)
+										foreach(FVector2 pointItem in points)
 										{
 											plot = new PlotPointItem(PlotPointPenStatus.PenDown);
 											plot.Point.X = pointItem.X;
@@ -353,11 +353,11 @@ namespace SvgPlotting
 							{
 								points = Bezier.GetCubicCurvePointsEquidistant(
 									point,
-									new FPoint(entryItem.Points[0], entryItem.Points[1]),
-									new FPoint(entryItem.Points[2], entryItem.Points[3]),
-									new FPoint(entryItem.Points[4], entryItem.Points[5]),
+									new FVector2(entryItem.Points[0], entryItem.Points[1]),
+									new FVector2(entryItem.Points[2], entryItem.Points[3]),
+									new FVector2(entryItem.Points[4], entryItem.Points[5]),
 									curveVertexCount);
-								foreach(FPoint pointItem in points)
+								foreach(FVector2 pointItem in points)
 								{
 									plot = new PlotPointItem(PlotPointPenStatus.PenDown);
 									plot.Point.X = pointItem.X;
@@ -368,7 +368,7 @@ namespace SvgPlotting
 								{
 									point.X = plot.Point.X;
 									point.Y = plot.Point.Y;
-									previousControlC = new FPoint(
+									previousControlC = new FVector2(
 										entryItem.Points[2], entryItem.Points[3]);
 								}
 							}
@@ -410,10 +410,10 @@ namespace SvgPlotting
 							{
 								points = Bezier.GetQuadraticCurvePointsEquidistant(
 									point,
-									new FPoint(entryItem.Points[0], entryItem.Points[1]),
-									new FPoint(entryItem.Points[2], entryItem.Points[3]),
+									new FVector2(entryItem.Points[0], entryItem.Points[1]),
+									new FVector2(entryItem.Points[2], entryItem.Points[3]),
 									curveVertexCount);
-								foreach(FPoint pointItem in points)
+								foreach(FVector2 pointItem in points)
 								{
 									plot = new PlotPointItem(PlotPointPenStatus.PenDown);
 									plot.Point.X = pointItem.X;
@@ -424,7 +424,7 @@ namespace SvgPlotting
 								{
 									point.X = plot.Point.X;
 									point.Y = plot.Point.Y;
-									previousControlQ = new FPoint(
+									previousControlQ = new FVector2(
 										entryItem.Points[0], entryItem.Points[1]);
 								}
 							}
@@ -444,19 +444,19 @@ namespace SvgPlotting
 							plot = null;
 							if(previousControlC == null)
 							{
-								previousControlC = new FPoint(0f, 0f);
+								previousControlC = new FVector2(0f, 0f);
 							}
 							if(entryItem.Points.Count > 3)
 							{
 								points = Bezier.GetCubicCurvePointsEquidistant(
 									point,
-									new FPoint(
+									new FVector2(
 										point.X + (point.X - previousControlC.X),
 										point.Y + (point.Y - previousControlC.Y)),
-									new FPoint(entryItem.Points[0], entryItem.Points[1]),
-									new FPoint(entryItem.Points[2], entryItem.Points[3]),
+									new FVector2(entryItem.Points[0], entryItem.Points[1]),
+									new FVector2(entryItem.Points[2], entryItem.Points[3]),
 									curveVertexCount);
-								foreach(FPoint pointItem in points)
+								foreach(FVector2 pointItem in points)
 								{
 									plot = new PlotPointItem(PlotPointPenStatus.PenDown);
 									plot.Point.X = pointItem.X;
@@ -467,7 +467,7 @@ namespace SvgPlotting
 								{
 									point.X = plot.Point.X;
 									point.Y = plot.Point.Y;
-									previousControlC = new FPoint(
+									previousControlC = new FVector2(
 										entryItem.Points[0], entryItem.Points[1]);
 								}
 							}
@@ -477,7 +477,7 @@ namespace SvgPlotting
 							plot = null;
 							if(previousControlQ == null)
 							{
-								previousControlQ = new FPoint(0f, 0f);
+								previousControlQ = new FVector2(0f, 0f);
 							}
 							if(entryItem.Points.Count > 1)
 							{
@@ -485,10 +485,10 @@ namespace SvgPlotting
 								previousControlQ.Y = point.Y + (point.Y - previousControlQ.Y);
 								points = Bezier.GetQuadraticCurvePointsEquidistant(
 									point,
-									new FPoint(previousControlQ.X, previousControlQ.Y),
-									new FPoint(entryItem.Points[0], entryItem.Points[1]),
+									new FVector2(previousControlQ.X, previousControlQ.Y),
+									new FVector2(entryItem.Points[0], entryItem.Points[1]),
 									curveVertexCount);
-								foreach(FPoint pointItem in points)
+								foreach(FVector2 pointItem in points)
 								{
 									plot = new PlotPointItem(PlotPointPenStatus.PenDown);
 									plot.Point.X = pointItem.X;

@@ -53,6 +53,7 @@ namespace SvgPlottingDemo
 
 | Version | Description |
 |---------|-------------|
+| 25.2714.3945 | Converted all uses of **Geometry.FPoint** to **Geometry.FVector2**. |
 | 25.2711.4233 | Initial public release. |
 
 ## More Information

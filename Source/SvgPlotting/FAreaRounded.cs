@@ -98,33 +98,33 @@ namespace SvgPlotting
 		/// <returns>
 		/// Reference to a collection of points composing a rounded rectangle.
 		/// </returns>
-		public static List<FPoint> GetVertices(FAreaRounded area, int curveCount)
+		public static List<FVector2> GetVertices(FAreaRounded area, int curveCount)
 		{
 			int cornerCount = 0;
 			FEllipse pattern = null;
-			List<FPoint> result = new List<FPoint>();
+			List<FVector2> result = new List<FVector2>();
 
 			if(area.mRoundedX != 0f && area.mRoundedY != 0f && curveCount != 0)
 			{
 				cornerCount = curveCount / 4;
 				pattern = new FEllipse(0f, 0f, area.mRoundedX, area.mRoundedY);
 				//	Top left center.
-				pattern.Center = new FPoint(
+				pattern.Center = new FVector2(
 					area.Left + area.mRoundedX, area.Top + area.mRoundedY);
 				result.AddRange(FEllipse.GetVerticesInArc(pattern, cornerCount,
 					Trig.DegToRad(90f), Trig.DegToRad(90f)));
 				//	Bottom left center.
-				pattern.Center = new FPoint(
+				pattern.Center = new FVector2(
 					area.Left + area.mRoundedX, area.Bottom - area.mRoundedY);
 				result.AddRange(FEllipse.GetVerticesInArc(pattern, cornerCount,
 					180f, 90f));
 				//	Bottom right center.
-				pattern.Center = new FPoint(
+				pattern.Center = new FVector2(
 					area.Right - area.mRoundedX, area.Bottom - area.mRoundedY);
 				result.AddRange(FEllipse.GetVerticesInArc(pattern, cornerCount,
 					Trig.DegToRad(270f), Trig.DegToRad(90f)));
 				//	Top right center.
-				pattern.Center = new FPoint(
+				pattern.Center = new FVector2(
 					area.Right - area.mRoundedX, area.Top + area.mRoundedY);
 				result.AddRange(FEllipse.GetVerticesInArc(pattern, cornerCount,
 					Trig.DegToRad(0f), Trig.DegToRad(90f)));
@@ -132,10 +132,10 @@ namespace SvgPlotting
 			else
 			{
 				//	This area doesn't have any rounding.
-				result.Add(new FPoint(area.Left, area.Top));
-				result.Add(new FPoint(area.Left, area.Bottom));
-				result.Add(new FPoint(area.Right, area.Bottom));
-				result.Add(new FPoint(area.Right, area.Top));
+				result.Add(new FVector2(area.Left, area.Top));
+				result.Add(new FVector2(area.Left, area.Bottom));
+				result.Add(new FVector2(area.Right, area.Bottom));
+				result.Add(new FVector2(area.Right, area.Top));
 			}
 			return result;
 		}

@@ -81,25 +81,25 @@ namespace SvgPlotting
 		/// Reference to the 2x2 matrix to apply to each of the points in the
 		/// collection.
 		/// </param>
-		public static void ApplyMatrix(PlotPointCollection points, FPoint anchor,
+		public static void ApplyMatrix(PlotPointCollection points, FVector2 anchor,
 			FMatrix2 matrix)
 		{
 			int count = 0;
-			FPoint home = null;
+			FVector2 home = null;
 			int index = 0;
-			FPoint point = null;
+			FVector2 point = null;
 
 			if(points?.Count > 0 && anchor != null && matrix != null)
 			{
 
 				count = points.Count;
-				home = FPoint.Negate(anchor);
+				home = FVector2.Negate(anchor);
 				for(index = 0; index < count; index++)
 				{
 					point = points[index].Point;
-					FPoint.Translate(point, home);
-					point = (FPoint)FMatrix2.Multiply(matrix, point);
-					FPoint.Translate(point, anchor);
+					FVector2.Translate(point, home);
+					point = (FVector2)FMatrix2.Multiply(matrix, point);
+					FVector2.Translate(point, anchor);
 					points[index].Point = point;
 				}
 			}
@@ -118,25 +118,25 @@ namespace SvgPlotting
 		/// Reference to the 4x4 matrix to apply to each of the points in the
 		/// collection.
 		/// </param>
-		public static void ApplyMatrix(PlotPointCollection points, FPoint anchor,
+		public static void ApplyMatrix(PlotPointCollection points, FVector2 anchor,
 			FMatrix4 matrix)
 		{
 			int count = 0;
-			FPoint home = null;
+			FVector2 home = null;
 			int index = 0;
-			FPoint point = null;
+			FVector2 point = null;
 
 			if(points?.Count > 0 && anchor != null && matrix != null)
 			{
 
 				count = points.Count;
-				home = FPoint.Negate(anchor);
+				home = FVector2.Negate(anchor);
 				for(index = 0; index < count; index++)
 				{
 					point = points[index].Point;
-					FPoint.Translate(point, home);
+					FVector2.Translate(point, home);
 					point = FMatrix4.Multiply(matrix, (FVector4)point);
-					FPoint.Translate(point, anchor);
+					FVector2.Translate(point, anchor);
 					points[index].Point = point;
 				}
 			}
@@ -159,25 +159,25 @@ namespace SvgPlotting
 		/// <param name="rotation">
 		/// The rotation to apply, in radians.
 		/// </param>
-		public static void ApplyRotation(PlotPointCollection points, FPoint anchor,
+		public static void ApplyRotation(PlotPointCollection points, FVector2 anchor,
 			float rotation)
 		{
 			int count = 0;
-			FPoint home = null;
+			FVector2 home = null;
 			int index = 0;
-			FPoint point = null;
+			FVector2 point = null;
 
 			if(points?.Count > 0 && anchor != null && rotation != 0f)
 			{
 
 				count = points.Count;
-				home = FPoint.Negate(anchor);
+				home = FVector2.Negate(anchor);
 				for(index = 0; index < count; index++)
 				{
 					point = points[index].Point;
-					FPoint.Translate(point, home);
-					point = FPoint.Rotate(point, rotation);
-					FPoint.Translate(point, anchor);
+					FVector2.Translate(point, home);
+					point = FVector2.Rotate(point, rotation);
+					FVector2.Translate(point, anchor);
 					points[index].Point = point;
 				}
 			}
@@ -208,7 +208,7 @@ namespace SvgPlotting
 		{
 			int count = 0;
 			int index = 0;
-			FPoint point = null;
+			FVector2 point = null;
 
 			if(points?.Count > 0)
 			{
@@ -247,7 +247,7 @@ namespace SvgPlotting
 		{
 			int count = 0;
 			int index = 0;
-			FPoint point = null;
+			FVector2 point = null;
 
 			if(points?.Count > 0)
 			{
@@ -313,19 +313,19 @@ namespace SvgPlotting
 		/// The list of value pairs to parse as coordinates.
 		/// </param>
 		/// <returns>
-		/// Reference to a list of FPoint coordinates.
+		/// Reference to a list of FVector2 coordinates.
 		/// </returns>
-		public static List<FPoint> GetCoordinatePairs(string coordinates)
+		public static List<FVector2> GetCoordinatePairs(string coordinates)
 		{
 			MatchCollection matches = null;
-			List<FPoint> result = new List<FPoint>();
+			List<FVector2> result = new List<FVector2>();
 
 			if(coordinates?.Length > 0)
 			{
 				matches = Regex.Matches(coordinates, ResourceMain.rxXYCoordinatePair);
 				foreach(Match matchItem in matches)
 				{
-					result.Add(new FPoint(
+					result.Add(new FVector2(
 						ToFloat(GetValue(matchItem, "x")),
 						ToFloat(GetValue(matchItem, "y"))));
 				}
@@ -1224,9 +1224,9 @@ namespace SvgPlotting
 			FEllipse ellipse = null;
 			int index = 0;
 			FLine line = null;
-			FPoint location = null;
+			FVector2 location = null;
 			PathEntryCollection pathEntries = null;
-			FPoint point = null;
+			FVector2 point = null;
 			int pointCount = 0;
 			int pointIndex = 0;
 			PlotPointCollection points = new PlotPointCollection();
@@ -1254,7 +1254,7 @@ namespace SvgPlotting
 					}
 					else
 					{
-						location = new FPoint();
+						location = new FVector2();
 					}
 					switch(node.NodeType.ToLower())
 					{
@@ -1282,7 +1282,7 @@ namespace SvgPlotting
 								GetSystemValue(svg, node, "y1"),
 								GetSystemValue(svg, node, "x2"),
 								GetSystemValue(svg, node, "y2"));
-							points = new List<FPoint>();
+							points = new List<FVector2>();
 							points.Add(PlotPointPenStatus.PenUp, line.PointA);
 							points.Add(PlotPointPenStatus.PenDown, line.PointB);
 							//Transform(points, FLine.GetCenter(line), node);
@@ -1466,7 +1466,7 @@ namespace SvgPlotting
 		/// this level, or toward the base.
 		/// </param>
 		public static void Transform(SvgImageItem svg, PlotPointCollection points,
-			FPoint anchor, HtmlNodeItem node)
+			FVector2 anchor, HtmlNodeItem node)
 		{
 			int count = 0;
 			string functionName = "";

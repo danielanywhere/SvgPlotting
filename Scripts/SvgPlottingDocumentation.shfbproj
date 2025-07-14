@@ -36,7 +36,7 @@
       <DocumentationSource sourceFile="..\Source\SvgPlotting\bin\Release\netstandard2.1\SvgPlotting.dll" />
     </DocumentationSources>
     <HelpTitle>Dan&amp;#39%3bs SVG Plotting Library</HelpTitle>
-    <HelpFileVersion>25.2711.4233</HelpFileVersion>
+    <HelpFileVersion>25.2714.3945</HelpFileVersion>
     <NamingMethod>MemberName</NamingMethod>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <RootNamespaceContainer>False</RootNamespaceContainer>

@@ -42,10 +42,10 @@ namespace SvgPlotting
 		//*	Public																																*
 		//*************************************************************************
 		//*-----------------------------------------------------------------------*
-		//*	_Implicit PlotPointCollection = List<Fpoint>													*
+		//*	_Implicit PlotPointCollection = List<FVector2>													*
 		//*-----------------------------------------------------------------------*
 		/// <summary>
-		/// Cast the List&lt;Fpoint&gt; instance to a PlotPointCollection.
+		/// Cast the List&lt;FVector2&gt; instance to a PlotPointCollection.
 		/// </summary>
 		/// <param name="points">
 		/// Reference to the list of general points to convert.
@@ -53,7 +53,7 @@ namespace SvgPlotting
 		/// <returns>
 		/// Reference to the newly constructed plot point collection.
 		/// </returns>
-		public static implicit operator PlotPointCollection(List<FPoint> points)
+		public static implicit operator PlotPointCollection(List<FVector2> points)
 		{
 			int index = 0;
 			PlotPointItem plotPoint = null;
@@ -61,14 +61,14 @@ namespace SvgPlotting
 
 			if(points?.Count > 0)
 			{
-				foreach(FPoint pointItem in points)
+				foreach(FVector2 pointItem in points)
 				{
 					plotPoint = new PlotPointItem()
 					{
 						PenStatus = (index == 0 ?
 							PlotPointPenStatus.PenUp : PlotPointPenStatus.PenDown)
 					};
-					FPoint.TransferValues(pointItem, plotPoint.Point);
+					FVector2.TransferValues(pointItem, plotPoint.Point);
 					index++;
 				}
 			}
@@ -91,14 +91,14 @@ namespace SvgPlotting
 		/// <returns>
 		/// Reference to the newly created and added plot point item.
 		/// </returns>
-		public PlotPointItem Add(PlotPointPenStatus penStatus, FPoint point)
+		public PlotPointItem Add(PlotPointPenStatus penStatus, FVector2 point)
 		{
 			PlotPointItem result = new PlotPointItem();
 
 			result.PenStatus = penStatus;
 			if(point != null)
 			{
-				FPoint.TransferValues(point, result.Point);
+				FVector2.TransferValues(point, result.Point);
 			}
 			this.Add(result);
 			return result;
@@ -122,13 +122,13 @@ namespace SvgPlotting
 		/// Reference to the member of the points location closest to the
 		/// specified location, if found. Otherwise, null.
 		/// </returns>
-		public static FPoint ClosestPoint(FPoint location,
+		public static FVector2 ClosestPoint(FVector2 location,
 			PlotPointCollection points)
 		{
 			List<float> distances = new List<float>();
 			int minIndex = -1;
 			float minValue = 0;
-			FPoint result = null;
+			FVector2 result = null;
 
 			if(location != null && points?.Count > 0)
 			{
@@ -164,7 +164,7 @@ namespace SvgPlotting
 		/// Index of the member of the points location closest to the
 		/// specified location, if found. Otherwise, -1.
 		/// </returns>
-		public static int ClosestPointIndex(FPoint location,
+		public static int ClosestPointIndex(FVector2 location,
 			PlotPointCollection points)
 		{
 			List<float> distances = new List<float>();
@@ -201,9 +201,9 @@ namespace SvgPlotting
 		/// <returns>
 		/// Reference to the centroid coordinate of the specified path.
 		/// </returns>
-		public static FPoint GetCenter(PlotPointCollection points)
+		public static FVector2 GetCenter(PlotPointCollection points)
 		{
-			FPoint result = new FPoint();
+			FVector2 result = new FVector2();
 
 			if(points?.Count > 0)
 			{
@@ -280,11 +280,11 @@ namespace SvgPlotting
 		/// <summary>
 		/// Private member for <see cref="Point">Point</see>.
 		/// </summary>
-		private FPoint mPoint = new FPoint();
+		private FVector2 mPoint = new FVector2();
 		/// <summary>
 		/// Get/Set a reference to the literal point.
 		/// </summary>
-		public FPoint Point
+		public FVector2 Point
 		{
 			get { return mPoint; }
 			set { mPoint = value; }
