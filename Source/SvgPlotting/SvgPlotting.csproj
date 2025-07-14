@@ -7,7 +7,7 @@
     <UserSecretsId>4349f100-f201-40e4-94b0-526dfa20eb1a</UserSecretsId>
     <PackageId>Dans.SvgPlotting.Library</PackageId>
     <Title>Dan's SVG Plotting Library</Title>
-    <Version>25.2714.3945</Version>
+    <Version>25.2714.4126</Version>
     <Description>Dan's SVG Plotting Library.</Description>
     <Copyright>Copyright(c) 2025. Daniel Patterson, MCSD (danielanywhere)</Copyright>
     <PackageProjectUrl>https://github.com/danielanywhere/SvgPlotting</PackageProjectUrl>
@@ -35,7 +35,7 @@
 
   <ItemGroup>
     <PackageReference Include="Dans.ConversionCalc.Library" Version="25.1109.1402" />
-    <PackageReference Include="Dans.Geometry.Library" Version="25.2714.3839" />
+    <PackageReference Include="Dans.Geometry.Library" Version="25.2714.4042" />
     <PackageReference Include="Dans.Html.Library" Version="25.2711.4233" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
