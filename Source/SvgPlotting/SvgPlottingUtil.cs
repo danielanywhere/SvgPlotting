@@ -1361,6 +1361,64 @@ namespace SvgPlotting
 		//*-----------------------------------------------------------------------*
 
 		//*-----------------------------------------------------------------------*
+		//* RemoveDuplicates																											*
+		//*-----------------------------------------------------------------------*
+		/// <summary>
+		/// Remove all values that are either exact duplicates or appear to be
+		/// duplicates when compared within the specified decimal precision.
+		/// </summary>
+		/// <param name="points">
+		/// Reference to the collection of points to review.
+		/// </param>
+		/// <param name="epsilonDecimalPlaces">
+		/// Number of decimal places to compare. Default is 3.
+		/// </param>
+		/// <returns>
+		/// A newly constructed plot point collection containing all of the
+		/// unique points in the caller's collection, within the specified
+		/// precision.
+		/// </returns>
+		public static PlotPointCollection RemoveDuplicates(
+			PlotPointCollection points, int epsilonDecimalPlaces = 3)
+		{
+			int index = 0;
+			PlotPointPenStatus penCurrent = PlotPointPenStatus.None;
+			PlotPointPenStatus penPrevious = PlotPointPenStatus.None;
+			PlotPointItem point = null;
+			FVector2 pointCurrent = new FVector2();
+			FVector2 pointPrevious = new FVector2();
+			PlotPointCollection result = new PlotPointCollection();
+
+			if(points?.Count > 0)
+			{
+				foreach(PlotPointItem pointItem in points)
+				{
+					penCurrent = pointItem.PenStatus;
+					FVector2.TransferValues(pointItem.Point, pointCurrent);
+					if(index > 0)
+					{
+						FVector2.SetPrecision(pointCurrent, epsilonDecimalPlaces);
+						if(penCurrent != penPrevious ||
+							!pointCurrent.Equals(pointPrevious))
+						{
+							point = new PlotPointItem()
+							{
+								PenStatus = penCurrent
+							};
+							FVector2.TransferValues(pointCurrent, point.Point);
+							result.Add(point);
+						}
+					}
+					FVector2.TransferValues(pointCurrent, pointPrevious);
+					penPrevious = penCurrent;
+					index++;
+				}
+			}
+			return result;
+		}
+		//*-----------------------------------------------------------------------*
+
+		//*-----------------------------------------------------------------------*
 		//* ToDouble																															*
 		//*-----------------------------------------------------------------------*
 		/// <summary>

@@ -42,7 +42,7 @@ namespace SvgPlotting
 		//*	Public																																*
 		//*************************************************************************
 		//*-----------------------------------------------------------------------*
-		//*	_Implicit PlotPointCollection = List<FVector2>													*
+		//*	_Implicit PlotPointCollection = List<FVector2>												*
 		//*-----------------------------------------------------------------------*
 		/// <summary>
 		/// Cast the List&lt;FVector2&gt; instance to a PlotPointCollection.
@@ -254,6 +254,32 @@ namespace SvgPlotting
 		public PlotPointItem(PlotPointPenStatus penStatus)
 		{
 			mPenStatus = penStatus;
+		}
+		//*-----------------------------------------------------------------------*
+
+		//*-----------------------------------------------------------------------*
+		//* Clone																																	*
+		//*-----------------------------------------------------------------------*
+		/// <summary>
+		/// Create a deep copy of the specified item and return that to the caller.
+		/// </summary>
+		/// <param name="item">
+		/// The item to copy.
+		/// </param>
+		/// <returns>
+		/// Reference to a newly created and populated copy of the caller's
+		/// original object.
+		/// </returns>
+		public static PlotPointItem Clone(PlotPointItem item)
+		{
+			PlotPointItem result = new PlotPointItem();
+
+			if(item != null)
+			{
+				result.mPenStatus = item.mPenStatus;
+				FVector2.TransferValues(item.mPoint, result.mPoint);
+			}
+			return result;
 		}
 		//*-----------------------------------------------------------------------*
 

@@ -267,6 +267,8 @@ namespace SvgPlotting
 						pointItem.Point.Y =
 							(float)HConverter.Convert((double)pointItem.Point.Y, "px", "mm");
 					}
+					//	In this version, duplicates are removed unconditionally.
+					mPlotPoints = RemoveDuplicates(mPlotPoints, 3);
 				}
 			}
 		}
